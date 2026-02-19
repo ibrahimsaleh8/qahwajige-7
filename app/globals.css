@@ -49,8 +49,8 @@ html {
   /* Colors - Qahwajiyyin Riyadh design (warm coffee/orange palette) */
   --main-background: #f9fafb;
   --main-black: #0f172a;
-  --main-color: #ea580c; /* primary orange */
-  --main-color-dark: #ea580c; /* darker orange */
+  --main-color: #ea580c;
+  --main-color-dark: #ea580c;
   --low-color: #6b7280;
   --card-background: #ffffff;
   --teal-50: #fff7ed;
