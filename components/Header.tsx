@@ -6,11 +6,12 @@ import { Coffee, Menu, X } from "lucide-react";
 import { HeaderData } from "@/lib/responseType";
 import Link from "next/link";
 const navLinks = [
-  { href: "#about", label: "معلومات عنا" },
-  { href: "#services", label: "ما نقدمه" },
-  { href: "#faq", label: "الأسئلة الشائعة" },
-  { href: "#gallery", label: "ألبوم الصور" },
-  { href: "#contact", label: "اتصل بنا" },
+  { href: "/#about", label: "معلومات عنا" },
+  { href: "/#services", label: "ما نقدمه" },
+  { href: "/articles", label: "خدمات الضيافة" },
+  { href: "/#faq", label: "الأسئلة الشائعة" },
+  { href: "/#gallery", label: "ألبوم الصور" },
+  { href: "/#contact", label: "اتصل بنا" },
 ];
 
 export function Header({

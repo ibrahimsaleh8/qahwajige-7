@@ -2,15 +2,13 @@
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
-import FloatedIcons from "@/components/FloatedIcons";
-import Footer from "@/components/Footer";
 import { GallerySection } from "@/components/GallerySection";
-import { Header } from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import PremiumPackagesSection from "@/components/PremiumPackagesSection";
 import RatingSection from "@/components/RatingSection";
 import ServicesSection from "@/components/ServicesSection";
 import { WhyUsSection } from "@/components/WhyUsSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
 import { APP_URL, CurrentProjectId } from "@/lib/ProjectId";
 import { ProjectContentResponse } from "@/lib/responseType";
 
@@ -43,11 +41,11 @@ export default async function HomePage() {
 
   return (
     <div className="bg-white overflow-x-hidden">
-      <Header brandName={data.header.brandName} telephone={data.footer.phone} />
       <HeroSection {...data.hero} />
       <AboutSection {...data.about} />
       <ServicesSection {...data.services} />
       <WhyUsSection {...data.whyUs} />
+      <HowItWorksSection />
       <PremiumPackagesSection
         packages={data.packages ?? []}
         whatsapp={data.hero?.whatsApp ?? ""}
@@ -57,15 +55,10 @@ export default async function HomePage() {
         averageRating={data.rating?.averageRating ?? 0}
         totalRatings={data.rating?.totalRatings ?? 0}
       />
-      <FloatedIcons
-        whatsapp={data.hero?.whatsApp ?? ""}
-        telephone={data.footer.phone ?? ""}
-      />
 
       <FAQSection />
       <GallerySection gallery={data.gallery} />
       <ContactSection {...data.footer} whatsapp={data.hero?.whatsApp ?? ""} />
-      <Footer {...data.footer} description={data.hero?.subheadline} />
     </div>
   );
 }
