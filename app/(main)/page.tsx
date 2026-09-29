@@ -11,9 +11,14 @@ import { WhyUsSection } from "@/components/WhyUsSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import { APP_URL, CurrentProjectId } from "@/lib/ProjectId";
 import { ProjectContentResponse } from "@/lib/responseType";
+import CustomSection from "@/components/CustomSection";
+import HomeArticlesSection, {
+  HomeArticle,
+} from "@/components/HomeArticlesSection";
 
 export default async function HomePage() {
   let data;
+  let homeArticles: HomeArticle[] = [];
 
   try {
     const res = await fetch(
@@ -36,29 +41,55 @@ export default async function HomePage() {
         email: "",
         address: "",
       },
+      customSections: [],
     };
+  }
+
+  try {
+    const articlesRes = await fetch(
+      `${APP_URL}/api/project/${CurrentProjectId}/articles/category/${encodeURIComponent("الصفحة-الرئيسية")}`,
+    );
+    if (articlesRes.ok) {
+      const articlesData = await articlesRes.json();
+      homeArticles = articlesData.data?.articles || [];
+    }
+  } catch (error) {
+    console.error("Failed to fetch home articles:", error);
   }
 
   return (
     <div className="bg-white overflow-x-hidden">
       <HeroSection {...data.hero} />
+      <GallerySection gallery={data.gallery} />
       <AboutSection {...data.about} />
       <ServicesSection {...data.services} />
-      <WhyUsSection {...data.whyUs} />
-      <HowItWorksSection />
       <PremiumPackagesSection
         packages={data.packages ?? []}
         whatsapp={data.hero?.whatsApp ?? ""}
       />
+      <WhyUsSection {...data.whyUs} />
+      <HowItWorksSection />
+      {data.customSections &&
+        data.customSections.length > 0 &&
+        data.customSections.map((customSection, index) => (
+          <CustomSection
+            key={customSection.id}
+            {...customSection}
+            index={index}
+          />
+        ))}
+
       <RatingSection
         projectId={CurrentProjectId}
         averageRating={data.rating?.averageRating ?? 0}
         totalRatings={data.rating?.totalRatings ?? 0}
       />
-
       <FAQSection />
-      <GallerySection gallery={data.gallery} />
-      <ContactSection {...data.footer} whatsapp={data.hero?.whatsApp ?? ""} />
+      {data.showContactSection && (
+        <ContactSection {...data.footer} whatsapp={data.hero?.whatsApp ?? ""} />
+      )}
+
+      <HomeArticlesSection articles={homeArticles} />
     </div>
   );
 }

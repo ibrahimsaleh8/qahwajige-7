@@ -11,7 +11,6 @@ const navLinks = [
   { href: "/articles", label: "خدمات الضيافة" },
   { href: "/#faq", label: "الأسئلة الشائعة" },
   { href: "/#gallery", label: "ألبوم الصور" },
-  { href: "/#contact", label: "اتصل بنا" },
 ];
 
 export function Header({

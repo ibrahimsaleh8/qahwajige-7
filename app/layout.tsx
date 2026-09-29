@@ -4,13 +4,15 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 import { APP_URL, CurrentProjectId } from "@/lib/ProjectId";
 import { StructuredData } from "@/components/StructuredData";
-import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import { fetchMetaData } from "@/lib/FetchMetaData";
+import { Analytics } from "@vercel/analytics/next";
+
 const cairoFont = Cairo({
   weight: ["1000", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["arabic"],
 });
-type MetaDataResponseDataType = {
+export type MetaDataResponseDataType = {
   title: string;
   description: string;
   keywords: string[];
@@ -18,15 +20,7 @@ type MetaDataResponseDataType = {
 };
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const res = await fetch(
-      `${APP_URL}/api/project/${CurrentProjectId}/metadata`,
-      {
-        next: {
-          tags: ["metadata"],
-        },
-      },
-    );
-    const data: MetaDataResponseDataType = await res.json();
+    const data = await fetchMetaData();
 
     const title = data.title || data.brandName;
     const description = data.description;
@@ -34,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const keywords = data.keywords || [brandName];
 
     return {
+      metadataBase: new URL(process.env.NEXT_PUBLIC_CURRENT_URL ?? ""),
       title,
       description,
       keywords,
@@ -63,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       alternates: {
-        canonical: process.env.NEXT_PUBLIC_APP_URL,
+        canonical: process.env.NEXT_PUBLIC_CURRENT_URL as string,
       },
       verification: {
         google: "CgoAEkxsNMlM3_5cjvRYQgSC0ab2IcY6oHQBBReHY-o",
@@ -94,7 +89,7 @@ export default async function RootLayout({
         <StructuredData
           name={data.brandName}
           description={data.description}
-          url={process.env.NEXT_PUBLIC_APP_URL as string}
+          url={process.env.NEXT_PUBLIC_CURRENT_URL as string}
         />
       </head>
       <body className={`${cairoFont.className} antialiased`}>
